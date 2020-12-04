@@ -1,4 +1,4 @@
-Analysis for Schmälzle & Grall (2020)
+Analysis for Jahn & Schmälzle & (submitted)
 =============================================
 
 Data and analysis code for  *Communication neuroscience on a shoestring: 
