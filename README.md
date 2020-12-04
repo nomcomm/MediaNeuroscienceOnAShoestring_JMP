@@ -1,11 +1,28 @@
-### ToDo
+Analysis for Schmälzle & Grall (2020)
+=============================================
 
-Todo
-We're trying out whether MUSE is worth it....
-First test 
+Data and analysis code for  *Communication neuroscience on a shoestring: 
+Examining electrocortical responses to visual messages via mobile EEG* [link](http://www.todo.pdf)
+***
 
-[Link to current paper](https://docs.google.com/document/d/1Pp6U2MghdA1u530dkgz-JqFHSoYBuh2CJc9sOkbdu5Q/edit?usp=sharing)
+<img align="right" width=250px src=data/explainer_fig.png> 
 
-[Link to current figures]( https://docs.google.com/presentation/d/1yl2FQnzBzNdbtgGPUCeBbNs6IZ7pGHCX3el4sJ9jrXw/edit#slide=id.p)
 
-[Link to datasheet](https://docs.google.com/spreadsheets/d/1vAwhNaEWv6X9kXJ4vPyyjaFl97FOpl5j/edit#gid=708426448)
+
+### Code
+
+-   The notebooks to reproduce the analyses are in the scripts folder.
+
+
+### Data
+
+-   The raw EEG data recorded from the EEG-notebooks are in the data folder. 
+
+### Dependencies
+
+-   Python. [Anaconda](http://continuum.io/downloads) should provide you with most of what you need. 
+-   requirements.txt contains the packages allowing to recreate the environment
+-   We thank the team from [eeg-notebooks](https://github.com/NeuroTechX/eeg-notebooks) for their fantastic work to democratize the cognitive neuroscience experiment.
+
+
+2020 | Ralf Schmaelzle & Nolan Jahn

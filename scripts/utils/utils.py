@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from glob import glob
-import os
+import os, mne, warnings, collections
 from collections import OrderedDict
 
 from mne import create_info, concatenate_raws
@@ -11,10 +11,14 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from autoreject import get_rejection_threshold, AutoReject, compute_thresholds 
+warnings.filterwarnings('ignore')
 
 
 sns.set_context('talk')
 sns.set_style('white')
+
+
 
 
 def load_muse_csv_as_raw(filename, sfreq=256., ch_ind=[0, 1, 2, 3],
@@ -186,6 +190,73 @@ def plot_conditions(epochs, conditions=OrderedDict(), ci=97.5, n_boot=1000,
         fig.suptitle(title, fontsize=20)
 
     return fig, axes
+
+
+def preprocess_muse(filepath, filename, sessions):
+
+    raw      = load_data(filepath, subject_nb = filename, sfreq = 256., session_nb = sessions);
+    raw.filter(0.1, 20, method='iir', verbose= False);
+    events   = mne.find_events(raw, min_duration=0, shortest_event = 0);
+    event_id = {'Positive': 1, 'Neutral': 2};
+    epochs = mne.Epochs(raw, events=events, 
+                    event_id=event_id, 
+                    tmin=-0.1, tmax=0.8, baseline=(-0.1,0),
+                    detrend = 1, preload=True, verbose=False); 
+    
+    # Getting the automated rejection threshold 
+    reject = get_rejection_threshold(epochs, decim=2)
+    epochs = mne.Epochs(raw, events = events, event_id=event_id, 
+                    tmin=-0.1, tmax=0.8, baseline = (None, 0),
+                    reject= reject, detrend = 1, preload=True, verbose=False);    
+    epochs.plot_drop_log()
+    epochs.drop_bad(reject=reject)
+
+    ar = AutoReject( n_interpolate= [0], random_state=42, n_jobs=1, verbose=False );#verbose='tqdm')
+    epochs_ar, reject_log = ar.fit_transform(epochs, return_log=True)
+    
+    # Plot Epochs & Epochs_AR
+    epochs.plot_image(0, cmap='interactive', sigma=1.,); plt.show()
+    epochs_ar.plot_image(0, cmap='interactive', sigma=1.,);  plt.show()
+    events[:,2] = np.zeros(len(events[:,2]));
+    stats_data  = np.zeros(4)
+    stats_data[0] = len(events) 
+    stats_data[1] = np.round(epochs_ar['Neutral'].get_data().shape[0])
+    stats_data[2] = np.round(epochs_ar['Positive'].get_data().shape[0])
+                            
+    epochs_ar.plot_drop_log();
+    epochs_ar.drop_bad()
+    
+    # computing sample drop %
+    sample_drop = (1 - len(epochs_ar.events)/len(events)) * 100
+    print('sample drop %: ', sample_drop)
+    stats_data[3] = sample_drop
+    
+    # Perform +/- Averaging to check signal quality (i.e. Is there an ERP compared to noise)
+    new_array = epochs_ar.get_data().copy();
+    for i in range(epochs_ar.get_data().shape[0]):
+        if   (i % 2) == 0:    #even number
+            new_array[i,:,:] = new_array[i,:,:];
+        elif (i % 2) != 0:    #uneven number 
+            new_array[i,:,:] = -1 * new_array[i,:,:];
+    epochs3  = mne.EpochsArray(new_array, epochs_ar.info, epochs_ar.events, epochs_ar.tmin, epochs_ar.event_id)
+    mne.viz.plot_compare_evokeds([list(epochs_ar.iter_evoked()), list(epochs3.iter_evoked())],
+                                  colors = ['green','gray'], combine = 'mean', picks=[2,3])
+    
+    conditions = collections.OrderedDict();
+    conditions['1-Positive'] = [1];
+    conditions['2-Neutral'] = [2];
+    
+    if sample_drop < 100:
+        if len(epochs_ar.events) > 10:
+            evokeds = [epochs_ar[name].average() for name in ('Positive', 'Neutral')]
+            mne.viz.plot_compare_evokeds(evokeds, colors = ['red', 'blue'],
+                                         picks = [0,1],ylim  = dict(eeg=[-10, 10]), combine = 'mean'); 
+            plt.show();
+            #all_evokeds.append(evokeds)
+    #trials_res.append(stats_data.copy())
+    print('\n----------------------------------------------------\n')
+    
+    return evokeds, stats_data
 
 
 def plot_highlight_regions(x, y, hue, hue_thresh=0, xlabel='', ylabel='',
