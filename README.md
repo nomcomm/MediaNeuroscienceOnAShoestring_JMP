@@ -21,7 +21,7 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 ### Dependencies
 
 -   Python. [Anaconda](http://continuum.io/downloads) should provide you with most of what you need. 
--   requirements.txt contains the packages allowing to recreate the environment
+-   requirements.txt contains the packages allowing to recreate the environment (e.g. by conda create --name <env> --file requirements.txt)
 -   We thank the team from [eeg-notebooks](https://github.com/NeuroTechX/eeg-notebooks) for their fantastic work to democratize the cognitive neuroscience experiment.
 
 
