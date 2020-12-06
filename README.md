@@ -1,4 +1,4 @@
-Analysis for Jahn & Schmälzle & (submitted)
+Analysis for Jahn & Schmälzle (submitted)
 =============================================
 
 Data and analysis code for  *Communication neuroscience on a shoestring: 
@@ -12,7 +12,7 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 
 ### Code
 
--   The notebooks to reproduce the analyses are in the scripts folder.
+-   The current notebooks to reproduce the analyses are in the scripts folder.
 
 
 ### Data
