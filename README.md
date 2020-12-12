@@ -6,6 +6,7 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nomcomm/MuseERP_Nolan/HEAD)
+(note: this binder-link may take a while to start, but once it is done, a fully environment will start with all the necessary prerequisite and a juypyter interface to run the notebooks)
 
 ***
 
