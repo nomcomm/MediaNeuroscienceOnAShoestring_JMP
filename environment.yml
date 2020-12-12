@@ -107,7 +107,6 @@ dependencies:
     - wcwidth==0.1.7
     - webencodings==0.5.1
     - widgetsnbextension==3.4.2
-    - wxpython==4.0.3
     - xlrd==1.1.0
     - zmq==0.0.0
 prefix: /Users/Ralf/anaconda3/envs/muse
