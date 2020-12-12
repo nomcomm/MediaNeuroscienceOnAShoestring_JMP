@@ -4,6 +4,9 @@ Analysis for Jahn & Schmälzle (submitted)
 Data and analysis code for  *Communication neuroscience on a shoestring: 
 Examining electrocortical responses to visual messages via mobile EEG* [link](http://www.todo.pdf)
 
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nomcomm/MuseERP_Nolan/HEAD)
+
 ***
 
 <img align="right" width=250px src=data/explainer_fig.png> 
