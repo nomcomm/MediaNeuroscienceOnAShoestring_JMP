@@ -1,6 +1,9 @@
 name: muse
+channels:
+  - https://repo.anaconda.com/pkgs/free
+  - conda-forge
+  - defaults
 dependencies:
-<<<<<<< HEAD
   - python=3.6
   - pip:
     - applescript==2018.11.19
