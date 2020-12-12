@@ -1,8 +1,4 @@
 name: muse
-channels:
-  - https://repo.anaconda.com/pkgs/free
-  - conda-forge
-  - defaults
 dependencies:
   - python=3.6
   - alabaster=0.7.12=py36_0
