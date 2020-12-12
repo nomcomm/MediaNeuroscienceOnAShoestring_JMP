@@ -1,6 +1,5 @@
 name: muse
 dependencies:
-  - python=3.6
   - alabaster=0.7.12=py36_0
   - astroid=2.2.5=py36_0
   - attrs=19.1.0=py_0
