@@ -33,7 +33,6 @@ nbformat==5.0.8
 nest-asyncio==1.4.3
 notebook==6.1.4
 numpy==1.19.4
-openssl==1.0.2l
 packaging==20.7
 pandas==1.1.5
 pandoc==2.11
