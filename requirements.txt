@@ -56,7 +56,6 @@ seaborn==0.11.0
 send2trash==1.5.0
 setuptools==36.4.0
 six==1.15.0
-sqlite==3.13.0
 terminado==0.9.1
 testpath==0.4.4
 tk==8.5.18=0
