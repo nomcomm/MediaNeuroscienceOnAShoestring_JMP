@@ -35,7 +35,7 @@ nbconvert==6.0.7=py36_0
 nbformat==5.0.8=py_0
 nest-asyncio==1.4.3=pyhd3eb1b0_0
 notebook==6.1.4=py36_0
-numpy=1.19.4
+numpy==1.19.4
 openssl==1.0.2l=0
 packaging==20.7=pyhd3eb1b0_0
 pandas==1.1.5
