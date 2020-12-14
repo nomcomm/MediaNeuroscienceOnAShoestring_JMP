@@ -28,11 +28,11 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 -   Python. [Anaconda](http://continuum.io/downloads) should provide you with most of what you need. 
 -   requirements.txt/reqsreduced.txt  contains the packages allowing to recreate the environment 
 -   e.g. by 
---  conda create --name <replacewithdesiredenvironmentname> python==3.6.7
--- conda activate <replacewithdesiredenvironmentname>
--- conda install nb_conda_kernels and/or pip install ipykernel (this step may not be necessary depending on yout machine/jupyter configuration)
--- pip install -r reqsreduced.txt
---  Finally: jupyter notebook 
+>  conda create --name <replacewithdesiredenvironmentname> python==3.6.7
+> conda activate <replacewithdesiredenvironmentname>
+> conda install nb_conda_kernels and/or pip install ipykernel (this step may not be necessary depending on yout machine/jupyter configuration)
+> pip install -r reqsreduced.txt
+> Finally: jupyter notebook 
 
 -   We thank the team from [eeg-notebooks](https://github.com/NeuroTechX/eeg-notebooks) for their fantastic work to democratize the cognitive neuroscience experiment.
 
