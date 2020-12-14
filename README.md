@@ -10,7 +10,7 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 
 ***
 
-<img align="right" width=250px src=data/explainer_fig.png> 
+<img align="right" width=550px src=data/explainer_fig.png> 
 
 
 
