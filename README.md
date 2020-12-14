@@ -29,9 +29,9 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 -   requirements.txt/reqsreduced.txt  contains the packages allowing to recreate the environment 
 -   e.g. by 
 
->  conda create --name <replacewithdesiredenvironmentname> python==3.6.7
+>  conda create --name [replacewithdesiredenvironmentname] python==3.6.7
   
-> conda activate <replacewithdesiredenvironmentname>
+> conda activate [replacewithdesiredenvironmentname]
   
 > conda install nb_conda_kernels and/or pip install ipykernel (this step may not be necessary depending on yout machine/jupyter configuration)
 
