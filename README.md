@@ -31,7 +31,7 @@ Examining electrocortical responses to visual messages via mobile EEG* [link](ht
 
 >  conda create --name [replacewithdesiredenvironmentname] python==3.6.7
   
-> conda activate [replacewithdesiredenvironmentname]
+> conda activate [replacewithdesiredenvironmentname] (for some conda versions it is: source activate ...)
   
 > conda install nb_conda_kernels and/or pip install ipykernel (this step may not be necessary depending on yout machine/jupyter configuration)
 
