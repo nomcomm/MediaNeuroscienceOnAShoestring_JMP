@@ -114,83 +114,6 @@ def load_data(data_dir, subject_nb=1, session_nb=1, sfreq=256.,
                                 replace_ch_names=replace_ch_names)
 
 
-def plot_conditions(epochs, conditions=OrderedDict(), ci=97.5, n_boot=1000,
-                    title='', palette=None, ylim=(-6, 6),
-                    diff_waveform=(1, 2)):
-    """Plot ERP conditions.
-
-    Args:
-        epochs (mne.epochs): EEG epochs
-
-    Keyword Args:
-        conditions (OrderedDict): dictionary that contains the names of the
-            conditions to plot as keys, and the list of corresponding marker
-            numbers as value. E.g.,
-
-                conditions = {'Non-target': [0, 1],
-                               'Target': [2, 3, 4]}
-
-        ci (float): confidence interval in range [0, 100]
-        n_boot (int): number of bootstrap samples
-        title (str): title of the figure
-        palette (list): color palette to use for conditions
-        ylim (tuple): (ymin, ymax)
-        diff_waveform (tuple or None): tuple of ints indicating which
-            conditions to subtract for producing the difference waveform.
-            If None, do not plot a difference waveform
-
-    Returns:
-        (matplotlib.figure.Figure): figure object
-        (list of matplotlib.axes._subplots.AxesSubplot): list of axes
-    """
-    if isinstance(conditions, dict):
-        conditions = OrderedDict(conditions)
-
-    if palette is None:
-        palette = sns.color_palette("hls", len(conditions) + 1)
-
-    X = epochs.get_data() * 1e6
-    times = epochs.times
-    y = pd.Series(epochs.events[:, -1])
-
-    fig, axes = plt.subplots(2, 2, figsize=[12, 6],
-                             sharex=True, sharey=True)
-    axes = [axes[1, 0], axes[0, 0], axes[0, 1], axes[1, 1]]
-
-    for ch in range(4):
-        for cond, color in zip(conditions.values(), palette):
-            sns.tsplot(X[y.isin(cond), ch], time=times, color=color,
-                       n_boot=n_boot, ci=ci, ax=axes[ch])
-
-        if diff_waveform:
-            diff = (np.nanmean(X[y == diff_waveform[1], ch], axis=0) -
-                    np.nanmean(X[y == diff_waveform[0], ch], axis=0))
-            axes[ch].plot(times, diff, color='k', lw=1)
-
-        axes[ch].set_title(epochs.ch_names[ch])
-        axes[ch].set_ylim(ylim)
-        axes[ch].axvline(x=0, ymin=ylim[0], ymax=ylim[1], color='k',
-                         lw=1, label='_nolegend_')
-
-    axes[0].set_xlabel('Time (s)')
-    axes[0].set_ylabel('Amplitude (uV)')
-    axes[-1].set_xlabel('Time (s)')
-    axes[1].set_ylabel('Amplitude (uV)')
-
-    if diff_waveform:
-        legend = (['{} - {}'.format(diff_waveform[1], diff_waveform[0])] +
-                  list(conditions.keys()))
-    else:
-        legend = conditions.keys()
-    axes[-1].legend(legend)
-    sns.despine()
-    plt.tight_layout()
-
-    if title:
-        fig.suptitle(title, fontsize=20)
-
-    return fig, axes
-
 
 def preprocess_muse(filepath, filename, sessions):
 
@@ -204,7 +127,7 @@ def preprocess_muse(filepath, filename, sessions):
                     detrend = 1, preload=True, verbose=False); 
     
     # Getting the automated rejection threshold 
-    reject = get_rejection_threshold(epochs, decim=2)
+    reject = get_rejection_threshold(epochs, random_state = 42, decim=2)
     epochs = mne.Epochs(raw, events = events, event_id=event_id, 
                     tmin=-0.1, tmax=0.8, baseline = (None, 0),
                     reject= reject, detrend = 1, preload=True, verbose=False);    
@@ -216,13 +139,17 @@ def preprocess_muse(filepath, filename, sessions):
     
     # Plot Epochs & Epochs_AR
     epochs.plot_image(0, cmap='interactive', sigma=1.,); plt.show()
+    
     epochs_ar.plot_image(0, cmap='interactive', sigma=1.,);  plt.show()
+    
     events[:,2] = np.zeros(len(events[:,2]));
-    stats_data  = np.zeros(4)
+    
+    stats_data  = np.zeros(5)
     stats_data[0] = len(events) 
     stats_data[1] = np.round(epochs_ar['Neutral'].get_data().shape[0])
     stats_data[2] = np.round(epochs_ar['Positive'].get_data().shape[0])
-                            
+    stats_data[4] = reject['eeg']
+    
     epochs_ar.plot_drop_log();
     epochs_ar.drop_bad()
     
@@ -238,77 +165,29 @@ def preprocess_muse(filepath, filename, sessions):
             new_array[i,:,:] = new_array[i,:,:];
         elif (i % 2) != 0:    #uneven number 
             new_array[i,:,:] = -1 * new_array[i,:,:];
-    epochs3  = mne.EpochsArray(new_array, epochs_ar.info, epochs_ar.events, epochs_ar.tmin, epochs_ar.event_id)
-    mne.viz.plot_compare_evokeds([list(epochs_ar.iter_evoked()), list(epochs3.iter_evoked())],
-                                  colors = ['green','gray'], combine = 'mean', picks=[2,3])
+            
+    epochs_plusminus  = mne.EpochsArray(new_array, epochs_ar.info, epochs_ar.events, epochs_ar.tmin, epochs_ar.event_id)
     
-    conditions = collections.OrderedDict();
-    conditions['1-Positive'] = [1];
-    conditions['2-Neutral'] = [2];
+    mne.viz.plot_compare_evokeds([list(epochs_ar.iter_evoked()), list(epochs_plusminus.iter_evoked())],
+                                  colors = ['green','gray'], 
+                                  combine = 'mean', picks=[0,3],
+                                  ylim  = dict(eeg=[-10, 10]))
+    
+    #conditions = collections.OrderedDict();
+    #conditions['1-Positive'] = [1];
+    #conditions['2-Neutral'] = [2];
     
     if sample_drop < 100:
         if len(epochs_ar.events) > 10:
             evokeds = [epochs_ar[name].average() for name in ('Positive', 'Neutral')]
-            mne.viz.plot_compare_evokeds(evokeds, colors = ['red', 'blue'],
-                                         picks = [0,1],ylim  = dict(eeg=[-10, 10]), combine = 'mean'); 
+            
+            mne.viz.plot_compare_evokeds(evokeds, 
+                                         colors = ['red', 'blue'],
+                                         combine = 'mean', picks = [0,3],
+                                         ylim  = dict(eeg=[-10, 10])); 
             plt.show();
-            #all_evokeds.append(evokeds)
-    #trials_res.append(stats_data.copy())
+
     print('\n----------------------------------------------------\n')
     
     return evokeds, stats_data
 
-
-def plot_highlight_regions(x, y, hue, hue_thresh=0, xlabel='', ylabel='',
-                           legend_str=()):
-    """Plot a line with highlighted regions based on additional value.
-
-    Plot a line and highlight ranges of x for which an additional value
-    is lower than a threshold. For example, the additional value might be
-    pvalues, and the threshold might be 0.05.
-
-    Args:
-        x (array_like): x coordinates
-        y (array_like): y values of same shape as `x`
-
-    Keyword Args:
-        hue (array_like): values to be plotted as hue based on `hue_thresh`.
-            Must be of the same shape as `x` and `y`.
-        hue_thresh (float): threshold to be applied to `hue`. Regions for which
-            `hue` is lower than `hue_thresh` will be highlighted.
-        xlabel (str): x-axis label
-        ylabel (str): y-axis label
-        legend_str (tuple): legend for the line and the highlighted regions
-
-    Returns:
-        (matplotlib.figure.Figure): figure object
-        (list of matplotlib.axes._subplots.AxesSubplot): list of axes
-    """
-    fig, axes = plt.subplots(1, 1, figsize=(10, 5), sharey=True)
-
-    axes.plot(x, y, lw=2, c='k')
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-
-    kk = 0
-    a = []
-    while kk < len(hue):
-        if hue[kk] < hue_thresh:
-            b = kk
-            kk += 1
-            while kk < len(hue):
-                if hue[kk] > hue_thresh:
-                    break
-                else:
-                    kk += 1
-            a.append([b, kk - 1])
-        else:
-            kk += 1
-
-    st = (x[1] - x[0]) / 2.0
-    for p in a:
-        axes.axvspan(x[p[0]]-st, x[p[1]]+st, facecolor='g', alpha=0.5)
-    plt.legend(legend_str)
-    sns.despine()
-
-    return fig, axes
