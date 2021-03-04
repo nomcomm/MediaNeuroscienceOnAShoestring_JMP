@@ -1,12 +1,8 @@
-Analysis for Jahn & Schmälzle (submitted)
+Analysis for Jahn, Meshi, Bente & Schmälzle (submitted)
 =============================================
 
-Data and analysis code for  *Communication neuroscience on a shoestring: 
-Examining electrocortical responses to visual messages via mobile EEG* [link](http://www.todo.pdf)
+Data and analysis code for  *FINAL TITLE* [link](http://www.todo.pdf)
 
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nomcomm/MuseERP_Nolan/HEAD)
-(note: this binder-link may take a while to start, but once it is done, a fully environment will start with all the necessary prerequisite and a juypyter interface to run the notebooks)
 
 ***
 
