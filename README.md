@@ -1,4 +1,4 @@
-Analysis for Jahn, Meshi, Bente & Schmälzle (submitted)
+Analysis for [redacted] (submitted)
 =============================================
 
 Data and analysis code for  *FINAL TITLE* [link](http://www.todo.pdf)
@@ -38,4 +38,4 @@ Data and analysis code for  *FINAL TITLE* [link](http://www.todo.pdf)
 -   We thank the team from [eeg-notebooks](https://github.com/NeuroTechX/eeg-notebooks) for their fantastic work to democratize the cognitive neuroscience experiment.
 
 
-2020 | Ralf Schmaelzle & Nolan Jahn
+2020- | 
