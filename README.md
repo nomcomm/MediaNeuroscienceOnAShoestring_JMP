@@ -1,4 +1,4 @@
-Analysis for [redacted] (submitted)
+Analysis for Jahn, Meshi, Bente, & Schmaelzle, 2022
 =============================================
 
 Data and analysis code for  *FINAL TITLE* [link](http://www.todo.pdf)
