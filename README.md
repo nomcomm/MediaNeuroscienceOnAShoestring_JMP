@@ -1,7 +1,7 @@
 Analysis for Jahn, Meshi, Bente, & Schmaelzle, 2022
 =============================================
 
-Data and analysis code for  *FINAL TITLE* [link](http://www.todo.pdf)
+Data and analysis code for *Jahn, N., Meshi, D., Bente, G., & Schmälzle, R.. (2022). Media neuroscience on a shoestring: Examining electrocortical responses to visual stimuli via mobile EEG. Journal of Media Psychology.* [link](https://dx.doi.org/10.1027/1864-1105/a000348)
 
 
 ***
